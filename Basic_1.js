@@ -14,7 +14,13 @@ function solution(telno) {
         "061": "전남", "062": "광주", "063": "전북", "064": "제주"
     };
 
-    if (tel.length > 15 || tel.length < 9) return failure; // 전화번호 길이가 15자리 초과하거나 9자리 미만이면 failure
+    if (tel.length > 15 || tel.length < 9) { // 전화번호 길이가 15자리 초과하거나 9자리 미만이면 failure
+        if (tel.startsWith("001") || tel.startsWith("002")) // 국제전화일 경우
+            return ["국제전화", "X"];
+        else {
+            return failure;
+        }
+    }
     else if (tel[0] !== '0') return failure; // 전화번호 시작이 0이 아니면 failure
 
     const top = tel.substring(0, 3); // 전화번호 앞 3자리
@@ -22,7 +28,7 @@ function solution(telno) {
     const mid = tel.substring(3); // 전화번호 앞 3자리를 제외한 부분
 
     if (tel.startsWith("001") || tel.startsWith("002")) { // 국제전화 검사
-        if (mid.length >= 8 && mid.length <= 12) {
+        if (mid.length >= 8 && mid.length <= 12) { // 앞 3자리를 제외한 부분이 8자리 이상 12자리 이하
             return ["국제전화", "O"];
         } else {
             return ["국제전화", "X"];
