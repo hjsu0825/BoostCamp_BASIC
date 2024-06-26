@@ -27,28 +27,44 @@ const games = [
   ];
 games.sort((a,b) => b.rating - a.rating); // 별점을 기준으로 내림차순 정렬
 
-// 날짜를 받는 함수
+// 문자열로 된 날짜를 Date 객체로 변환하는 함수
 function intDate(stringDate) {
-    let year = parseInt(stringDate.substring(0,4), 10);
-    let month = parseInt(stringDate.substring(4,6), 10) - 1;
-    return new Date(year, month);
+    let year = parseInt(stringDate.substring(0,4), 10); // 연도 추출
+    let month = parseInt(stringDate.substring(4,6), 10) - 1; // 월 추출(Date에 월이 +1돼서 들어가기 때문에 -1)
+    return new Date(year, month); 
 };
 
 function find(param0, param1) {
-    let date = intDate(param0);
-    let players = param1;
+    let date = intDate(param0); // 문자열로 된 날짜를 Date 객체로 변환
+    let players = param1; // 참여자 수
 
+    // 입력된 날짜에 플레이 가능한 게임 필터링
     let durationGame = gamePeriods.filter(period => period.start <= date && period.end >= date).map(period => period.name);
+    // 날짜 + 인원수에 따른 플레이 가능한 게임 필터링
     let availableGame = games.filter(game => durationGame.includes(game.name) && game.maxPlayers >= players);
     
-    return availableGame.map(game => {
-        if (game.discontinued) {
-            return `${game.name}*(${game.genre}) ${game.rating}`
-        } else {
-            return `${game.name}(${game.genre}) ${game.rating}`
-        }}).join(', ');
+    // 결과 출력
+    // 결과가 하나면서
+    if (availableGame.length === 1) {
+        return availableGame.map(game => {
+            if (game.discontinued) {
+                return `${game.name}*(${game.genre})` // 단종된 게임
+            } else {
+                return `${game.name}(${game.genre})` // 단종되지 않은 게임
+            }}).join(', ');
+    } 
+    // 결과가 여러개면서
+    else {
+        return availableGame.map(game => {
+            if (game.discontinued) {
+                return `${game.name}*(${game.genre}) ${game.rating}` // 단종된 게임
+            } else {
+                return `${game.name}(${game.genre}) ${game.rating}` // 단종되지 않은 게임
+            }}).join(', ');
+    }
 };
 
+// 테스트케이스
 console.log(find("198402", 1)); // "Prince*(RPG) 4.8, Brave*(RPG) 4.2"
 console.log(find("200008", 8)); // "Football(Sports)"
 console.log(find("199004", 5)); // ""
