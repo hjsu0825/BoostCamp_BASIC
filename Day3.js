@@ -40,10 +40,15 @@ function find(param0, param1) {
 
     let durationGame = gamePeriods.filter(period => period.start <= date && period.end >= date).map(period => period.name);
     let availableGame = games.filter(game => durationGame.includes(game.name) && game.maxPlayers >= players);
-
-    return availableGame.map(game => `${game.name} ${game.genre} ${game.rating}`).join(', ');
+    
+    return availableGame.map(game => {
+        if (game.discontinued) {
+            return `${game.name}*(${game.genre}) ${game.rating}`
+        } else {
+            return `${game.name}(${game.genre}) ${game.rating}`
+        }}).join(', ');
 };
 
 console.log(find("198402", 1)); // "Prince*(RPG) 4.8, Brave*(RPG) 4.2"
-console.log(find("200008", 8)); // "Football(Sports) 2.9"
+console.log(find("200008", 8)); // "Football(Sports)"
 console.log(find("199004", 5)); // ""
