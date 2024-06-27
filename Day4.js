@@ -13,7 +13,7 @@ function reset() {
                 row.push('   ');
             }
         }
-        return row.join('');
+        return row;
     });
 }
 
@@ -28,16 +28,15 @@ function randomFill(){
                 row.push(board[index]);
             }
         }
-        return row.join('');
+        return row;
     });
 }
 
 function analyze() {
     for (let row of ladder) {
-        let cell = row.split('|').map(c => c.trim());
-        for (let i = 0; i < cell.length; i++) {
-            const left = cell[i];
-            const right = cell[i+1];
+        for (let i = 1; i < row.length; i+=2) {
+            const left = row[i];
+            const right = row[i+2];
 
             if (left === '---' && right === '---') return console.log(false);
             if (left === '\\-\\' && right === '/-/') return console.log(false);
@@ -48,7 +47,7 @@ function analyze() {
 }
 
 function display() {
-    return console.log(ladder.join('\n'));
+    return console.log(ladder.map(c => c.join('')).join('\n'));
 }
 
 reset()
