@@ -56,6 +56,18 @@ function display() {
     return console.log(ladder.map(c => c.join('')).join('\n'));
 }
 
+// 테스트 케이스
+reset()
+display()
+
+console.log('=================')
+
+reset()
+randomFill()
+display()
+
+console.log('=================')
+
 reset()
 randomFill()
 analyze()
