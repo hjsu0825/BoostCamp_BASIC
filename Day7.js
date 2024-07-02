@@ -88,7 +88,7 @@ function PRINT() {
     return stk.pop().toString(); // 스택의 마지막 값 문자열로 출력
 }
 
-// 
+// 배열로 된 입력 값을 실행하기 위한 함수
 function calculation(input) {
     let output = []; // 출력할 결과를 담을 리스트
     for (let cmd of input) {
@@ -112,6 +112,7 @@ function calculation(input) {
     return output;
 }
 
+// 테스트 케이스
 console.log(calculation(["PRINT", "PUSH0", "PRINT", "POPA"])); // ["EMPTY", "0", "EMPTY"]
 console.log(calculation(["PUSH1", "PUSH1", "PUSH2", "POPA", "POPB", "SWAP", "ADD", "PRINT", "PRINT"])); // ["3", "1"]
 console.log(calculation(["PUSH2", "PUSH2", "PUSH1", "POPA", "POPB", "SWAP", "SUB", "POPA", "POPB", "ADD", "PRINT"])); // ["3"]
