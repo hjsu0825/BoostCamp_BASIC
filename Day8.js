@@ -11,7 +11,7 @@ const dayOfMonth = {
 const dayOfWeek = ['Sol', 'Lun', 'Mar', 'Mer', 'Jov', 'Ven', 'Sat'];
 const shortMonths = [6, 12, 18, 24]; // 27일인 달
 
-function totalDay(input) {
+function earthDate(input) {
     let [year, month, day] = input.split('-').map(Number);
     function earthLeapYear(year) {
         return year % 4 === 0;
@@ -34,20 +34,39 @@ function totalDay(input) {
     return total.toLocaleString();
 }
 
-function isLeapYear(year) {
-    return year % 2 === 0;
-}
-
 function marsDate(earthDay) {
     let marsDay = earthDay / (24.65979 / 24);
     let marsYear = Math.floor(marsDay / 668.5907);
-    marsDay %= 668.5907;
+    marsDay = Math.floor(marsDay % 668.5907);
 
+    function marsLeapYear(year) {
+        return year % 2 === 0;
+    }
+
+    let marsTotal = marsLeapYear(marsYear) ? 669 : 668;
+    let marsMonth = 0;
+
+    for (let i = 1; i <= 24; i++){
+        let marsMonthDay = shortMonths.includes(i) ? 27 : 28;
+        if (i === 24 && marsLeapYear(marsYear)) {
+            marsMonthDay = 28;
+        }
+        if (marsDay >= marsMonthDay) {
+            marsDay -= marsMonthDay;
+        }
+        else {
+            marsMonth = i;
+            break;
+        }
+    }
     
+    return [marsYear, marsMonth, marsDay];
 }
+
+
 
 console.clear();
 rl.question("지구날짜는? ", (inputDate) => {
-    console.log('지구날은',totalDay(inputDate));
+    console.log('지구날은',earthDate(inputDate));
     rl.close();
 })
