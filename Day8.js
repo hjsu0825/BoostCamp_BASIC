@@ -4,10 +4,6 @@ const rl = readline.createInterface({
     output: process.stdout
 });
 
-const dayOfMonth = {
-    default: 28,
-    short: 27
-};
 const dayOfWeek = ['Sol', 'Lun', 'Mar', 'Mer', 'Jov', 'Ven', 'Sat'];
 const shortMonths = [6, 12, 18, 24]; // 27일인 달
 
