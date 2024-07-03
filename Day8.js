@@ -63,7 +63,13 @@ function marsDate(earthDay) {
     return [marsYear, marsMonth, marsDay];
 }
 
+function calendar(marsDate) {
+    const [year, month, day] = marsDate;
+    let calendar = `${year} 화성년 ${month}월 ${day}일\n`;
+    calendar += dayOfWeek.join(' ') + '\n';
 
+    
+}
 
 console.clear();
 rl.question("지구날짜는? ", (inputDate) => {
