@@ -34,12 +34,13 @@ function earthDate(input) {
 }
 
 function marsDate(earthDay) {
-    let marsDay = earthDay / 1.02749125; // 지구일 -> 화성일
-    let marsYear = Math.floor(marsDay / 668.5907);
-    marsDay = Math.floor(marsDay % 668.5907);
+    let marsDay = earthDay; // 지구일 -> 화성일
+
+    let marsYear = Math.floor(marsDay / 668.5);
+    marsDay = Math.floor(marsDay % 668.5);
 
     function marsLeapYear(year) {
-        return year % 2 === 1;
+        return year % 2 === 0;
     }
 
     let marsMonth = 0;
@@ -51,36 +52,59 @@ function marsDate(earthDay) {
         }
         if (marsDay >= marsMonthDay) {
             marsDay -= marsMonthDay;
-        } else {
+        }
+        else {
             marsMonth = i;
             break;
         }
     }
-    
+
     return [marsYear, marsMonth, marsDay];
 }
 
 function calendar(marsDate) {
     const [year, month, day] = marsDate;
-    let calendarStr = `${year}년 ${month}월\n`;
+    let calendarStr = `     ${year}년 ${month}월\n`;
     calendarStr += dayOfWeek.join(' ') + '\n';
 
     let daysInMonth = shortMonths.includes(month) ? 27 : 28;
 
-    for (let d = 1; d <= daysInMonth; d++) {
-        calendarStr += d.toString().padStart(2, ' ') + ' ';
-        if ((d % 7) === 0) {
+    for (let i = 1; i <= daysInMonth; i++) {
+        calendarStr += i.toString().padStart(2, ' ') + ' ';
+        if ((i % 7) === 0) {
             calendarStr += '\n';
         }
     }
     console.log(calendarStr);
 }
 
+function progressBar(duration) {
+    return new Promise((resolve) => {
+        const ticks = 10; // 10% 단위로 업데이트
+        const intervalDuration = duration / ticks; // 각 업데이트 간의 시간 간격
+
+        let progress = 0;
+
+        const interval = setInterval(() => {
+            progress += 10; // 10% 단위로 증가
+            process.stdout.clearLine();
+            process.stdout.cursorTo(0);
+            process.stdout.write(`${'▓'.repeat(progress / 10)}${'░'.repeat((100 - progress) / 10)} 화성까지 여행 ${progress}%`);
+
+            if (progress >= 100) {
+                clearInterval(interval); // 진행이 완료되면 interval을 멈춤
+                resolve();
+            }
+        }, intervalDuration);
+    });
+}
+
 console.clear();
-rl.question("지구날짜는? ", (inputDate) => {
+rl.question("지구날짜는? ", async (inputDate) => {
     let earthDays = earthDate(inputDate);
-    let marsDateResult = marsDate(earthDays);
-    console.log(`지구날은 ${earthDays.toLocaleString()} => ${marsDateResult[0]} 화성년 ${marsDateResult[1]}월 ${marsDateResult[2]}일`);
-    calendar(marsDateResult);
+    let marsDays = marsDate(earthDays);
+    await progressBar(5000);
+    console.log(`\n지구날은 ${earthDays.toLocaleString()} => ${marsDays[0]} 화성년 ${marsDays[1]}월 ${marsDays[2]}일\n`);
+    calendar(marsDays);
     rl.close();
 });
