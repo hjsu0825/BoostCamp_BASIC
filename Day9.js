@@ -20,7 +20,13 @@ function parseFile(filePath) {
     }); 
 }
 
+function filterLevel(logEntry, level) {
+    return logEntry.filter(Type => Type.level === level);
+}
 
+function sortTime(logEntry) {
+    return logEntry.sort((a,b) => new Date(a.time) - new Date(b.time));
+}
 
 //console.log(parseFile(filePath));
 console.log(filterLevel(LogType, 'ERROR'));
