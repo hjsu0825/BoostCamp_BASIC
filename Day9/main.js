@@ -1,5 +1,5 @@
 const fs = require('fs');
-const filePath = './system.log';
+const filePath = './Day9/system.log';
 
 // 로그 항목을 나타내는 클래스 정의
 class LogType {
